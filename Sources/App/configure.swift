@@ -25,4 +25,6 @@ public func configure(_ app: Application) async throws {
 
     // register routes
     try routes(app)
+	
+	try await QuestionSeed().generate(app: app)
 }
