@@ -13,7 +13,7 @@ public func configure(_ app: Application) async throws {
         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? SQLPostgresConfiguration.ianaPortNumber,
         username: Environment.get("DATABASE_USERNAME") ?? "aleks100s",
-        password: Environment.get("DATABASE_PASSWORD") ?? "",
+        password: Environment.get("DATABASE_PASSWORD") ?? "qwerty",
         database: Environment.get("DATABASE_NAME") ?? "giveortake",
         tls: .prefer(try .init(configuration: .clientDefault)))
     ), as: .psql)
@@ -22,6 +22,7 @@ public func configure(_ app: Application) async throws {
 
     app.views.use(.leaf)
 
+	try await app.autoMigrate()
 
     // register routes
     try routes(app)

@@ -1,7 +1,7 @@
 import Vapor
 
 struct QuestionDTO: Content {
-	let id: Int?
+	let id: UUID?
 	let text: String
 	let answer: Double
 	let imageUrl: String?

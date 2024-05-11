@@ -1,10 +1,11 @@
 import Fluent
+import Foundation
 
 final class Question: Model, @unchecked Sendable {
 	static let schema = "questions"
 	
-	@ID(custom: "id", generatedBy: .database)
-	var id: Int?
+	@ID
+	var id: UUID?
 	
 	@Field(key: "text")
 	var text: String
@@ -12,12 +13,12 @@ final class Question: Model, @unchecked Sendable {
 	@Field(key: "answer")
 	var answer: Double
 	
-	@Field(key: "image_url")
+	@OptionalField(key: "image_url")
 	var imageUrl: String?
 	
 	init() {}
 	
-	init(id: Int? = nil, text: String, answer: Double, imageUrl: String? = nil) {
+	init(id: UUID? = nil, text: String, answer: Double, imageUrl: String? = nil) {
 		self.id = id
 		self.text = text
 		self.answer = answer
