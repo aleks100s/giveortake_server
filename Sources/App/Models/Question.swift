@@ -26,6 +26,6 @@ final class Question: Model, @unchecked Sendable {
 	}
 	
 	func toDTO() -> QuestionDTO {
-		QuestionDTO(id: id, text: text, answer: answer, imageUrl: imageUrl)
+		QuestionDTO(id: id, text: text, imageUrl: imageUrl)
 	}
 }
