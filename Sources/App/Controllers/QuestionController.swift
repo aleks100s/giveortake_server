@@ -8,7 +8,11 @@ struct QuestionController: RouteCollection {
 		questions.post(":ID", "answer", use: { try await answerQuestion(req: $0) })
 	}
 	
-	func getRandom(req: Request) async throws -> QuestionDTO {
+	private func getRandom(req: Request) async throws -> QuestionDTO {
+		guard let deviceId = req.headers["device-id"].first else {
+			throw Abort(.unauthorized)
+		}
+		
 		guard let question = try await Question.query(on: req.db).all().randomElement() else {
 			throw Abort(.notFound)
 		}
@@ -16,7 +20,11 @@ struct QuestionController: RouteCollection {
 		return question.toDTO()
 	}
 	
-	func answerQuestion(req: Request) async throws -> ResultDTO {
+	private func answerQuestion(req: Request) async throws -> ResultDTO {
+		guard let deviceId = req.headers["device-id"].first else {
+			throw Abort(.unauthorized)
+		}
+		
 		let answer = try req.content.decode(AnswerDTO.self)
 		guard let question = try await Question.find(req.parameters.get("ID"), on: req.db) else {
 			throw Abort(.notFound)
