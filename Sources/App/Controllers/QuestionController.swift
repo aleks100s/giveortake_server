@@ -2,7 +2,7 @@ import Vapor
 
 struct QuestionController: RouteCollection {
 	func boot(routes: RoutesBuilder) throws {
-		let questions = routes.grouped(PathComponent(stringLiteral: Question.schema))
+		let questions = routes.grouped("api", PathComponent(stringLiteral: Question.schema))
 
 		questions.get(use: { try await self.getRandom(req: $0) })
 		questions.post(":ID", "answer", use: { try await answerQuestion(req: $0) })

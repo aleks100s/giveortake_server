@@ -19,6 +19,7 @@ public func configure(_ app: Application) async throws {
     ), as: .psql)
 
     app.migrations.add(CreateQuestion())
+	app.migrations.add(CreateUser())
 
     app.views.use(.leaf)
 
