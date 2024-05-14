@@ -9,10 +9,6 @@ struct QuestionController: RouteCollection {
 	}
 	
 	private func getRandom(req: Request) async throws -> QuestionDTO {
-		guard let deviceId = req.headers["device-id"].first else {
-			throw Abort(.unauthorized)
-		}
-		
 		guard let question = try await Question.query(on: req.db).all().randomElement() else {
 			throw Abort(.notFound)
 		}
@@ -21,10 +17,6 @@ struct QuestionController: RouteCollection {
 	}
 	
 	private func answerQuestion(req: Request) async throws -> ResultDTO {
-		guard let deviceId = req.headers["device-id"].first else {
-			throw Abort(.unauthorized)
-		}
-		
 		let answer = try req.content.decode(AnswerDTO.self)
 		guard let question = try await Question.find(req.parameters.get("ID"), on: req.db) else {
 			throw Abort(.notFound)

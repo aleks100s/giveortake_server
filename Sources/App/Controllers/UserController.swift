@@ -8,29 +8,20 @@ struct UserController: RouteCollection {
 	}
 	
 	private func getUserByDevice(req: Request) async throws -> UserDTO {
-		guard let deviceId = req.headers["device-id"].first else {
-			throw Abort(.unauthorized)
+		guard let user = req.user else {
+			throw Abort(.notFound)
 		}
-		
-		guard let user = try? await User.query(on: req.db)
-			.filter(\.$deviceId, .equal, deviceId)
-			.first()
-		else { throw Abort(.notFound) }
 		
 		return user.toDTO()
 	}
 	
 	private func createUser(req: Request) async throws -> UserDTO {
-		struct Container: Content {
-			let deviceId: String
-		}
-		
-		guard let container = try? req.content.decode(Container.self) else {
-			throw Abort(.badRequest)
+		guard let deviceId = req.headers["device-id"].first else {
+			throw Abort(.unauthorized)
 		}
 		
 		let user = User()
-		user.deviceId = container.deviceId
+		user.deviceId = deviceId
 		try await user.save(on: req.db)
 		return user.toDTO()
 	}

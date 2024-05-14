@@ -20,6 +20,10 @@ public func configure(_ app: Application) async throws {
 
     app.migrations.add(CreateQuestion())
 	app.migrations.add(CreateUser())
+	app.migrations.add(CreateLog())
+	
+	app.middleware.use(DeviceIDCheckerMiddleware())
+	app.middleware.use(LoggingMiddleware())
 
     app.views.use(.leaf)
 
