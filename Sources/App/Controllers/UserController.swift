@@ -17,7 +17,7 @@ struct UserController: RouteCollection {
 	
 	private func createUser(req: Request) async throws -> UserDTO {
 		guard let deviceId = req.headers["device-id"].first else {
-			throw Abort(.unauthorized)
+			throw Abort(.badRequest)
 		}
 		
 		let user = User()

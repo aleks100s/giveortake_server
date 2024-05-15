@@ -1,19 +1,14 @@
 import Vapor
 
 struct DeviceIDCheckerMiddleware: AsyncMiddleware {
-	func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {
-		guard request.url.path != "/api/\(User.schema)/create" else {
-			return try await next.respond(to: request)
-		}
-		
+	func respond(to request: Request, chainingTo next: AsyncResponder) async throws -> Response {		
 		guard let deviceId = request.headers["device-id"].first else {
 			throw Abort(.unauthorized)
 		}
 		
-		guard let user = try? await User.query(on: request.db)
+		let user = try await User.query(on: request.db)
 			.filter(\.$deviceId, .equal, deviceId)
 			.first()
-		else { throw Abort(.notFound) }
 				
 		request.storage[UserKey.self] = user
 		
