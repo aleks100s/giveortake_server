@@ -24,6 +24,16 @@ final class UserContrbollerTests: XCTestCase {
 		}
 	}
 	
+	func test_createUser_existingDeviceId() throws {
+		let deviceId = UUID().uuidString
+		try app.test(.POST, "api/users/create", headers: ["device-id": deviceId]) { response in
+			XCTAssertEqual(response.status, .ok)
+		}
+		try app.test(.POST, "api/users/create", headers: ["device-id": deviceId]) { response in
+			XCTAssertEqual(response.status, .badRequest)
+		}
+	}
+	
 	func test_getUserById() throws {
 		let deviceId = UUID().uuidString
 		var createdUser: UserDTO?

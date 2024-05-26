@@ -20,6 +20,12 @@ struct UserController: RouteCollection {
 			throw Abort(.badRequest)
 		}
 		
+		let existingUser = try? await req.db.query(User.self)
+			.filter(\.$deviceId, .equal, deviceId).first()
+		guard existingUser == nil else {
+			throw Abort(.badRequest)
+		}
+		
 		let user = User()
 		user.deviceId = deviceId
 		try await user.save(on: req.db)
