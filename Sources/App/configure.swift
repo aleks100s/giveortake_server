@@ -32,6 +32,7 @@ public func configure(_ app: Application) async throws {
     app.migrations.add(CreateQuestion())
 	app.migrations.add(CreateUser())
 	app.migrations.add(CreateLog())
+	app.migrations.add(CreatePendingQuestion())
 	
 	app.middleware.use(DeviceIDCheckerMiddleware())
 	app.middleware.use(LoggingMiddleware())

@@ -29,3 +29,9 @@ final class Question: Model, @unchecked Sendable {
 		QuestionDTO(id: id, text: text, imageUrl: imageUrl)
 	}
 }
+
+extension Question: Equatable {
+	static func == (lhs: Question, rhs: Question) -> Bool {
+		lhs.id == rhs.id
+	}
+}

@@ -13,6 +13,12 @@ final class User: Model, @unchecked Sendable {
 	@OptionalField(key: "username")
 	var username: String?
 	
+	@Children(for: \.$user)
+	var logs: [Log]
+	
+	@Children(for: \.$user)
+	var pendingQuestions: [PendingQuestion]
+	
 	init() {}
 	
 	init(id: UUID? = nil, deviceId: String, username: String?) {
